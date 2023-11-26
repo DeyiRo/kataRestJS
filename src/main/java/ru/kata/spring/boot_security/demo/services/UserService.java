@@ -95,11 +95,6 @@ public class UserService implements UserDetailsService {
         return em.createQuery("select r from Role r").getResultList();
     }
 
-    // public List<User> usergtList(Long idMin) {
-    //     return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-    //            .setParameter("paramId", idMin).getResultList();
-    // }
-
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
