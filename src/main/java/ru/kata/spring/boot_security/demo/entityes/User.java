@@ -43,6 +43,12 @@ public class User implements UserDetails {
         this.profession = profession;
     }
 
+    public User(String name, String profession, String password) {
+        this.name = name;
+        this.profession = profession;
+        this.password = password;
+    }
+
     @Override
     public String getPassword() {
         return password;
