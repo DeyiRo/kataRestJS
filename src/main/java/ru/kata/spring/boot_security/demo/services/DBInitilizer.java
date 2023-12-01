@@ -24,8 +24,8 @@ public class DBInitilizer {
 
     @PostConstruct
     private void addUsersToDB() {
-        User user1 = new User("Romul", "first", "$2a$12$Tk9bQjUbIGUPcaCoouQ05uj78BF/uRkK3S6IOxy9HwnWgUkBrEOya");
-        User user2 = new User("Rem", "second", "$2a$12$Tk9bQjUbIGUPcaCoouQ05uj78BF/uRkK3S6IOxy9HwnWgUkBrEOya");
+        User user1 = new User("admin", "admin", "$2a$12$j8Izp9LBTLgl2E6FhnDfeuho/2zi/sHvhPFOs6z2c9UVgBrWemeY."); //пароль admin
+        User user2 = new User("user", "user", "$2a$12$bRLF9XbJAHXfC2lF15ydYe5LCN757Kga8pcAgxf6TmBItTQyDl8Cm"); // пароль user
         Role role1 = new Role("ROLE_ADMIN");
         Role role2 = new Role("ROLE_USER");
 
