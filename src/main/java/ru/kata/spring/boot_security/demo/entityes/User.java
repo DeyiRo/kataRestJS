@@ -1,10 +1,13 @@
 package ru.kata.spring.boot_security.demo.entityes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 
@@ -17,14 +20,18 @@ public class User implements UserDetails {
     private long id;
 
     @Column(name = "username")
+    @NotEmpty(message = "Name should not be empty")
     private String name;
 
     private String profession;
 
     private String password;
-
+    @JsonIgnore
     @Transient
     private String passwordConfirm;
+
+    @Transient
+    private List<Long> rolesIds;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -54,6 +61,7 @@ public class User implements UserDetails {
         return password;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -79,6 +87,7 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return name;
@@ -109,22 +118,30 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public List<Long> getRolesIds() {
+        return rolesIds;
+    }
+
     //
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

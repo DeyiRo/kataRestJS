@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.entityes.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -18,6 +19,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -41,26 +44,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public boolean saveUser(User user, Set<Role> roles) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
-        if (userFromDB != null) {
-            return false;
-        }
-        user.setRoles(roles); //Collections.singleton(new Role(2L, "ROLE_USER")));
+    public void saveUser(User user) {
+        Set<Role> roles = roleService.findRoles(user.getRolesIds());
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return true;
     }
 
     @Transactional
-    public void updateUser(User user, Set<Role> roles) {
+    public void updateUser(User user) {
+        Set<Role> roles = roleService.findRoles(user.getRolesIds());
         User userToUpdate = userRepository.getById(user.getId());
         userToUpdate.setRoles(roles);
         userToUpdate.setName(user.getName());
         userToUpdate.setProfession(user.getProfession());
-        userToUpdate.setPassword(user.getPassword());
+        userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userToUpdate);
-        //em.merge(user);
     }
 
     public boolean deleteUser(Long userId) {
@@ -70,6 +69,13 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    @Override
+    public User findUserById(long id) {
+        Optional<User> userFromDb = userRepository.findById(id);
+        return userFromDb.orElse(new User());
+    }
+
 
 }
 
