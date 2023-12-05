@@ -211,7 +211,7 @@ async function editUser(modal, id) {
                               
                  <div class="col">
                     <label for="editPassword" class="com-form-label">Password</label>
-                    <input type="password" class="form-control" id="editPassword" value="" required>
+                    <input type="password" class="form-control" id="editPassword" value="${user.password}" required>
                 </div>
                 
                 <div class="form-group">
